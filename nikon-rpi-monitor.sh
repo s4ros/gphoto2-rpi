@@ -10,4 +10,4 @@ DATE=$(stat -c "%Y" ${LOGFILE})
 curl -H "Content-Type: application/json" \
   -X POST \
   -d "{\"date\":${DATE},\"content\": \"${CONTENT}\",\"filename\":\"${FILENAME}\"}" \
-  http://infinigy.pl:56789/input
+  http://infinigy.pl:56789/insert

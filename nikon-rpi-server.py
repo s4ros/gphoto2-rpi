@@ -35,9 +35,9 @@ def dbinit():
     return None
 
 ###############################################
-## POST /input
-@app.route('/input', methods=['POST','GET'])
-def input():
+## POST /insert
+@app.route('/insert', methods=['POST','GET'])
+def insert():
     if request.method == "POST":
         data = request.get_json()
         log_date = data['date']
