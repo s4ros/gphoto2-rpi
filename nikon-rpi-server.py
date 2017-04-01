@@ -10,14 +10,23 @@
 
 import sqlite3
 import time
-from flask import Flask, redirect, url_for, request
+from flask import Flask, redirect, url_for, request, render_template
 
 app = Flask(__name__)
 
+###############################################
+## GET index
 @app.route('/')
-def hello_world():
-   return 'Hello world'
+def index():
+    conn = sqlite3.connect('database.db')
+    result = conn.execute('SELECT * from nikon_monitor LIMIT 60')
+    results = str(result)
+    conn.close()
+    return render_template(
+       "index.html", **locals())
 
+###############################################
+## GET /dbinit
 @app.route('/dbinit')
 def dbinit():
     conn = sqlite3.connect('database.db')
@@ -25,11 +34,12 @@ def dbinit():
     conn.close()
     return None
 
+###############################################
+## POST /input
 @app.route('/input', methods=['POST','GET'])
 def input():
     if request.method == "POST":
         data = request.get_json()
-        # tutaj obsluga dodawania danych do bazy SQLite
         log_date = data['date']
         log_content = data['content']
         log_filename = data['filename']
@@ -46,7 +56,6 @@ def input():
             response = "Error ocurred"
             conn.rollback()
         conn.close()
-
         return response
     else:
         return "POST req only"
