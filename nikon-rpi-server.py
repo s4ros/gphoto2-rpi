@@ -10,6 +10,7 @@
 
 import sqlite3
 import time
+from datetime import datetime
 from flask import Flask, redirect, url_for, request, render_template
 
 app = Flask(__name__)
@@ -19,11 +20,18 @@ app = Flask(__name__)
 @app.route('/')
 def index():
     conn = sqlite3.connect('database.db')
-    result = conn.execute('SELECT * from nikon_monitor LIMIT 60')
-    results = str(result)
+    c = conn.cursor()
+    rows = []
+    for row in c.execute('SELECT * from nikon_monitor LIMIT 60'):
+        rows.append({
+            'id':row[0],
+            'date':datetime.fromtimestamp(float(row[1])).strftime('%Y-%m-%d %H:%M:%S'),
+            'log':row[2],
+            'filename':row[3]
+        })
     conn.close()
     return render_template(
-       "index.html", **locals())
+       "index.html", results=rows)
 
 ###############################################
 ## GET /dbinit
@@ -51,7 +59,7 @@ def insert():
             insert_str = "INSERT INTO nikon_monitor (date, log, filename) VALUES({}, '{}', '{}')".format(log_date, log_content, log_filename)
             cur.execute(insert_str)
             conn.commit()
-            response = "Received date={} with string: {}".format(log_date, log_content)
+            response = "Received date={} with string: {}\n".format(log_date, log_content)
         except:
             response = "Error ocurred"
             conn.rollback()

@@ -1,4 +1,38 @@
 {% extends "layout.html" %}
 {% block body %}
-  Hello {{ results }}
+
+<div id="index_page">
+  <div id="lastlog_container">
+    <div id="header">
+      <span>Ostatnie max. 60 wpisów z aparatu</span>
+    </div>
+    <div id="lastlog">
+      <table>
+        <tbody>
+        <tr>
+          <th>ID</th><th>Log</th><th>Data</th><th>Nazwa pliku</th>
+        </tr>
+        {% for row in results %}
+        <tr>
+          <td>
+            {{ row['id'] }}
+          </td>
+          <td>
+            {{ row['log'] }}
+          </td>
+          <td>
+            {{ row['date'] }}
+          </td>
+          <td>
+            {{ row['filename'] }}
+          </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+
 {% endblock %}
