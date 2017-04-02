@@ -5,9 +5,6 @@
 ## do.not.fucking.redistribute.for.free ;)
 ##############################################################################
 
-# time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(1347517370))
-
-
 import sqlite3
 import time
 from datetime import datetime
