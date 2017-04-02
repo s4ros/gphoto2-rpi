@@ -78,6 +78,7 @@ html, body {
 table {
   border-spacing: 0px;
   border-collapse: collapse;
+  background-color: rgba(0, 0, 0, 0.6);
 }
 
 table > tbody > tr {
@@ -95,6 +96,7 @@ table > tbody > tr > td {
   border-bottom: 1px solid #565656;
   border-left: 1px solid #565656;
   border-right: 1px solid #565656;
+  padding: 0 10px;
 }
 
 .td_id {
