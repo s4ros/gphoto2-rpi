@@ -33,7 +33,7 @@ Example
 ```
 docker run -d --rm --name nikon-rpi \
   -v /your/persistent/path:/rpi \
-  -v /etc/localtime:/etc/localtime \
+  -v /etc/localtime:/etc/localtime:ro \
   -p 56789:56789 \
   s4ros/nikon-rpi
 ```
