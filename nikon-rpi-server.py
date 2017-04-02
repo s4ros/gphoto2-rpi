@@ -24,7 +24,7 @@ def index():
     conn = sqlite3.connect('database.db')
     c = conn.cursor()
     rows = []
-    for row in c.execute('SELECT * from nikon_monitor LIMIT {}'.format(LIMIT)):
+    for row in c.execute('SELECT * from nikon_monitor ORDER BY id DESC LIMIT {} '.format(LIMIT)):
         rows.append({
             'id':row[0],
             'date':datetime.fromtimestamp(float(row[1])).strftime('%Y-%m-%d %H:%M:%S'),
@@ -36,10 +36,10 @@ def index():
     currentTime = datetime.fromtimestamp(float(time.time())).strftime('%Y-%m-%d %H:%M:%S')
 
     # counting the status
-    lastOne = len(rows)-1
-    lastTime = int(rows[lastOne]['epoch'])
+    lastTime = int(rows[0]['epoch'])
     timeNow = time.time()
     deltaTime = timeNow - lastTime
+    print("deltaTime = {}, timeNow = {}, lastTime = {}".format(deltaTime, timeNow, lastTime))
     if deltaTime > FAILURE_TIME:
         status="FAIL"
     else:
