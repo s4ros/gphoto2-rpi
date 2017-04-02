@@ -12,6 +12,11 @@ from flask import Flask, redirect, url_for, request, render_template
 
 app = Flask(__name__)
 
+# how many items pull from database
+LIMIT = 8
+# time after we set status to FAIL [seconds]
+FAILURE_TIME = 1200
+
 ###############################################
 ## GET index
 @app.route('/')
@@ -19,16 +24,28 @@ def index():
     conn = sqlite3.connect('database.db')
     c = conn.cursor()
     rows = []
-    for row in c.execute('SELECT * from nikon_monitor LIMIT 60'):
+    for row in c.execute('SELECT * from nikon_monitor LIMIT {}'.format(LIMIT)):
         rows.append({
             'id':row[0],
             'date':datetime.fromtimestamp(float(row[1])).strftime('%Y-%m-%d %H:%M:%S'),
+            'epoch': row[1],
             'log':row[2],
             'filename':row[3]
         })
     conn.close()
+    currentTime = datetime.fromtimestamp(float(time.time())).strftime('%Y-%m-%d %H:%M:%S')
+
+    # counting the status
+    lastOne = len(rows)-1
+    lastTime = int(rows[lastOne]['epoch'])
+    timeNow = time.time()
+    deltaTime = timeNow - lastTime
+    if deltaTime > FAILURE_TIME:
+        status="FAIL"
+    else:
+        status="OK"
     return render_template(
-       "index.html", results=rows)
+       "index.html", results=rows, time=currentTime, status=status, limit=LIMIT)
 
 ###############################################
 ## GET /dbinit

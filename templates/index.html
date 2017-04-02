@@ -3,8 +3,21 @@
 
 <div id="index_page">
   <div id="lastlog_container">
+    <div id="status">
+      <span>Status:
+        {% if status in "OK" %}
+        Camera online
+        {% else %}
+        Camera offline
+        {% endif %}
+      </span>
+      <div id="status_{{ status }}"></div>
+    </div>
+    <hr />
     <div id="header">
-      <span>Ostatnie max. 60 wpisów z aparatu</span>
+      <span>Aktualny czas: {{ time }}</span>
+      <br/>
+      <span>Ostatnie max. {{ limit }} wpisów z aparatu</span>
     </div>
     <div id="lastlog">
       <table>
@@ -14,16 +27,16 @@
         </tr>
         {% for row in results %}
         <tr>
-          <td>
+          <td class="td_id">
             {{ row['id'] }}
           </td>
-          <td>
+          <td class="td_log">
             {{ row['log'] }}
           </td>
-          <td>
+          <td class="td_date">
             {{ row['date'] }}
           </td>
-          <td>
+          <td class="td_filename">
             {{ row['filename'] }}
           </td>
         </tr>
