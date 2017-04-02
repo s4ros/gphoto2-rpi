@@ -17,3 +17,8 @@ To launch server you just simply executed
 ```sh
 python nikon-rpi-server.py
 ```
+# Docker
+I just couldn't resis and did it for fun - **nikon-rpi** is now dockerized! You can just `docker pull s4ros/nikon-rpi` and enjoy my funny work :D
+
+Just one thing. You need to specify the `/rpi` volume for persistence, so specify `docker run ... -v /you/volume/path:/rpi` when running container and everything will be just fine :D
+Ah.. and other thing - there is `EXPOSE 56789`, so you'll probably want to expose this port outside, or change it, I don't care :)

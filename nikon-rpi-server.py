@@ -12,6 +12,8 @@ from flask import Flask, redirect, url_for, request, render_template
 
 app = Flask(__name__)
 
+# database file path
+DBFILE = "./rpi/database.db"
 # how many items pull from database
 LIMIT = 8
 # time after we set status to FAIL [seconds]
@@ -21,7 +23,7 @@ FAILURE_TIME = 1200
 ## GET index
 @app.route('/')
 def index():
-    conn = sqlite3.connect('database.db')
+    conn = sqlite3.connect(DBFILE)
     c = conn.cursor()
     rows = []
     for row in c.execute('SELECT * from nikon_monitor ORDER BY id DESC LIMIT {} '.format(LIMIT)):
@@ -51,7 +53,7 @@ def index():
 ## GET /dbinit
 @app.route('/dbinit')
 def dbinit():
-    conn = sqlite3.connect('database.db')
+    conn = sqlite3.connect(DBFILE)
     conn.execute('CREATE TABLE nikon_monitor (id INTEGER PRIMARY KEY, date INTEGER, log TEXT, filename TEXT)')
     conn.close()
     return None
@@ -68,7 +70,7 @@ def insert():
 
         # sqlite insert
         try:
-            conn = sqlite3.connect('database.db')
+            conn = sqlite3.connect(DBFILE)
             cur = conn.cursor()
             insert_str = "INSERT INTO nikon_monitor (date, log, filename) VALUES({}, '{}', '{}')".format(log_date, log_content, log_filename)
             cur.execute(insert_str)
