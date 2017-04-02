@@ -25,10 +25,21 @@ docker pull s4ros/nikon-rpi
 ```
 and enjoy my funny work :D
 
-Just one thing. You need to specify the `/rpi` volume for persistence, so specify
-```
-docker run ... -v /you/volume/path:/rpi s4ros/nikon-rpi
-```
-when running container and everything will be just fine :D
+## Requirements
 
-Ah.. and other thing - there is `EXPOSE 56789`, so you'll probably want to expose this port outside, or change it, I don't care :)
+You need to pass some extra arguments to docker to run this containter properly :)
+
+Example
+```
+docker run -d --rm --name nikon-rpi \
+  -v /your/persistent/path:/rpi \
+  -v /etc/localtime:/etc/localtime \
+  -p 56789:56789 \
+  s4ros/nikon-rpi
+```
+I know, that's a long one, but trust me, you want to do all of this :)
+
+That said, we can do the first launch :)
+
+# First Usage
+When you'll run the container you need to request `http://<yourdockerhost>:56789/dbinit` to initialize the sql3 database. After initializing database you can just use `http://<yourdockerhost>:56789`
