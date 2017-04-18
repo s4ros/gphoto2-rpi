@@ -1,2 +1,3 @@
-0,10,20,30,40,50 * * * * pi /usr/bin/gphoto2 --set-config capturetarget=1; /usr/bin/gphoto2 --capture-image 
+0,10,20,30,40,50 * * * * pi /usr/bin/gphoto2 --set-config capturetarget=1; /usr/bin/gphoto2 --capture-image
 2,12,22,32,42,52 * * * * pi /home/pi/nikon-rpi/nikon-rpi-monitor.sh &> /dev/null
+* * * * *                pi /home/pi/bin/reverse
