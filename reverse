@@ -1,0 +1,13 @@
+#!/bin/bash
+
+RPORT=$1
+
+pidof autossh
+if [[ $? -ne 0 ]]; then
+  /usr/bin/autossh -M 0 -N -f \
+    -o "ServerAliveInterval 30" \
+    -o "ServerAliveCountMax 3" \
+    -i /home/pi/.ssh/id_rsa \
+    -R ${RPORT}:localhost:22 \
+    tunel@infinigy.pl
+fi
