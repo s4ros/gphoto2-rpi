@@ -54,7 +54,7 @@ def index():
 @app.route('/dbinit')
 def dbinit():
     conn = sqlite3.connect(DBFILE)
-    conn.execute('CREATE TABLE nikon_monitor (id INTEGER PRIMARY KEY, date INTEGER, log TEXT, filename TEXT)')
+    conn.execute('CREATE TABLE nikon_monitor (id INTEGER PRIMARY KEY, date INTEGER, log TEXT, filename TEXT, rpi_id TEXT)')
     conn.close()
     return None
 
