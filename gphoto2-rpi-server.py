@@ -5,23 +5,50 @@
 ## do.not.fucking.redistribute.for.free ;)
 ##############################################################################
 
+import os, sys
 import sqlite3
 import time
 from datetime import datetime
 from flask import Flask, redirect, url_for, request, render_template
 
+# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
 app = Flask(__name__)
 
 # database file path
-DBFILE = "./rpi/database.db"
+DBFILE = os.path.join(BASE_DIR,'rpi','database.db')
+DBFILE = './rpi/database.db'
 # how many items pull from database
 LIMIT = 8
 # time after we set status to FAIL [seconds]
 FAILURE_TIME = 1200
 
 ###############################################
-## GET index
+## GET index (new, for multi rpis)
 @app.route('/')
+def multi_index():
+    conn = sqlite3.connect(DBFILE)
+    c = conn.cursor()
+    all_rpi = dict()
+    for row in c.execute("SELECT id,value FROM gphoto2_rpi_ids"):
+        all_rpi[row[0]] = dict()
+        all_rpi[row[0]]['rpi_name'] = row[1]
+    print(all_rpi)
+    for i in all_rpi:
+        for row in c.execute("SELECT * FROM gphoto2_rpi_monitor WHERE rpi_id = {} ORDER BY id DESC LIMIT 1".format(i)):
+            print(row)
+            print "id={}, rpi_id={}, date={}, log={}, filename={}".format(row[0], row[1], row[2], row[3], row[4])
+            all_rpi[row[1]]['id'] = row[0]
+            all_rpi[row[1]]['rpi_id'] = row[1]
+            all_rpi[row[1]]['date'] = row[2]
+            all_rpi[row[1]]['log'] = row[3]
+            all_rpi[row[1]]['filename'] = row[4]
+    return str(all_rpi)
+
+###############################################
+## GET index (old)
+@app.route('/old')
 def index():
     conn = sqlite3.connect(DBFILE)
     c = conn.cursor()
@@ -53,10 +80,23 @@ def index():
 ## GET /dbinit
 @app.route('/dbinit')
 def dbinit():
+    # create 'rpi' directory if doesn't exist
+    if not os.path.isdir(os.path.join(BASE_DIR,'rpi')):
+        print("Creating {} directory".format(os.path.join(BASE_DIR,'rpi')))
+        os.mkdir(os.path.join(BASE_DIR,'rpi'))
+    # delete old sqlite databases if exist
+    try:
+        print("Removing {} database file".format(DBFILE))
+        os.remove(DBFILE)
+    except:
+        print("Cannot remove {} file. Maybe it doesn't exist.".format(DBFILE))
+        pass
+    print("Database file is: {}".format(DBFILE))
     conn = sqlite3.connect(DBFILE)
-    conn.execute('CREATE TABLE gphoto2_rpi_monitor (id INTEGER PRIMARY KEY, date INTEGER, log TEXT, filename TEXT, rpi_id TEXT)')
+    conn.execute('CREATE TABLE gphoto2_rpi_ids (id INTEGER PRIMARY KEY, value TEXT UNIQUE)')
+    conn.execute('CREATE TABLE gphoto2_rpi_monitor (id INTEGER PRIMARY KEY, rpi_id INTEGER ,date INTEGER, log TEXT, filename TEXT, FOREIGN KEY(rpi_id) REFERENCES gphoto2_rpi_ids(id))')
     conn.close()
-    return None
+    return "dbinit"
 
 ###############################################
 ## POST /insert
@@ -68,13 +108,27 @@ def insert():
         log_content = data['content']
         log_filename = data['filename']
         rpi_id = data['rpi_id']
-
+        rpi_found = False
         # sqlite insert
         try:
             conn = sqlite3.connect(DBFILE)
-            cur = conn.cursor()
-            insert_str = "INSERT INTO gphoto2_rpi_monitor (date, log, filename) VALUES({}, '{}', '{}')".format(log_date, log_content, log_filename)
-            cur.execute(insert_str)
+            c = conn.cursor()
+            # check if we the rpi_id doesn't exist in the db already
+            for row in c.execute("SELECT * FROM gphoto2_rpi_ids"):
+                if rpi_id == row[1]:
+                    rpi_found = True
+                    rpi_found_id = row[0]
+            if not rpi_found:
+                print "Didn't found {} in our database. Adding new one.".format(rpi_id)
+                insert_str = "INSERT INTO gphoto2_rpi_ids (value) VALUES('{}')".format(rpi_id)
+                c.execute(insert_str)
+                conn.commit()
+                rows = c.execute("SELECT id,value FROM gphoto2_rpi_ids WHERE value = '{}'".format(rpi_id))
+                print("new rpi data")
+                rpi_found_id = rows.fetchone()[0]
+                print(rpi_found_id)
+            insert_str = "INSERT INTO gphoto2_rpi_monitor (date, log, filename, rpi_id) VALUES({}, '{}', '{}', {})".format(log_date, log_content, log_filename, rpi_found_id)
+            c.execute(insert_str)
             conn.commit()
             response = "Received date={} with string: {}\n".format(log_date, log_content)
         except:
@@ -83,7 +137,7 @@ def insert():
         conn.close()
         return response
     else:
-        return "POST req only"
+        return "POST requests only"
 
 ##############################################################################
 ## main code
