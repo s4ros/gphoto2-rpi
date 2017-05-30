@@ -4,7 +4,7 @@ set -x
 
 SERVER=${1:-"rpi.s4ros.it"}
 
-LOGFILE=/tmp/aparat.log
+LOGFILE=${2:-"/tmp/aparat.log"}
 
 /usr/bin/gphoto2 -L | tail -n 50> $LOGFILE
 CONTENT=$(tail -n1 ${LOGFILE})

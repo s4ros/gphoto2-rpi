@@ -26,7 +26,7 @@ def index():
     conn = sqlite3.connect(DBFILE)
     c = conn.cursor()
     rows = []
-    for row in c.execute('SELECT * from nikon_monitor ORDER BY id DESC LIMIT {} '.format(LIMIT)):
+    for row in c.execute('SELECT * from gphoto2_rpi_monitor ORDER BY id DESC LIMIT {} '.format(LIMIT)):
         rows.append({
             'id':row[0],
             'date':datetime.fromtimestamp(float(row[1])).strftime('%Y-%m-%d %H:%M:%S'),
@@ -54,7 +54,7 @@ def index():
 @app.route('/dbinit')
 def dbinit():
     conn = sqlite3.connect(DBFILE)
-    conn.execute('CREATE TABLE nikon_monitor (id INTEGER PRIMARY KEY, date INTEGER, log TEXT, filename TEXT, rpi_id TEXT)')
+    conn.execute('CREATE TABLE gphoto2_rpi_monitor (id INTEGER PRIMARY KEY, date INTEGER, log TEXT, filename TEXT, rpi_id TEXT)')
     conn.close()
     return None
 
@@ -67,12 +67,13 @@ def insert():
         log_date = data['date']
         log_content = data['content']
         log_filename = data['filename']
+        rpi_id = data['rpi_id']
 
         # sqlite insert
         try:
             conn = sqlite3.connect(DBFILE)
             cur = conn.cursor()
-            insert_str = "INSERT INTO nikon_monitor (date, log, filename) VALUES({}, '{}', '{}')".format(log_date, log_content, log_filename)
+            insert_str = "INSERT INTO gphoto2_rpi_monitor (date, log, filename) VALUES({}, '{}', '{}')".format(log_date, log_content, log_filename)
             cur.execute(insert_str)
             conn.commit()
             response = "Received date={} with string: {}\n".format(log_date, log_content)
