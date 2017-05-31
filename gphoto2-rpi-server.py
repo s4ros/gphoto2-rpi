@@ -30,20 +30,19 @@ FAILURE_TIME = 1200
 def multi_index():
     conn = sqlite3.connect(DBFILE)
     c = conn.cursor()
-    all_rpi = dict()
+    all_rpi = []
     for row in c.execute("SELECT id,value FROM gphoto2_rpi_ids"):
-        all_rpi[row[0]] = dict()
-        all_rpi[row[0]]['rpi_name'] = row[1]
-    print(all_rpi)
-    for i in all_rpi:
-        for row in c.execute("SELECT * FROM gphoto2_rpi_monitor WHERE rpi_id = {} ORDER BY id DESC LIMIT 1".format(i)):
-            print(row)
-            print "id={}, rpi_id={}, date={}, log={}, filename={}".format(row[0], row[1], row[2], row[3], row[4])
-            all_rpi[row[1]]['id'] = row[0]
-            all_rpi[row[1]]['rpi_id'] = row[1]
-            all_rpi[row[1]]['date'] = row[2]
-            all_rpi[row[1]]['log'] = row[3]
-            all_rpi[row[1]]['filename'] = row[4]
+        new_entry = dict()
+        new_entry['rpi_id'] = row[0]
+        new_entry['rpi_name'] = row[1]
+        all_rpi.append(new_entry)
+
+    for i in range(len(all_rpi)):
+        row = c.execute("SELECT * FROM gphoto2_rpi_monitor WHERE rpi_id = {} ORDER BY id DESC LIMIT 1".format(all_rpi[i]['rpi_id'])).fetchone()
+        all_rpi[i]['id'] = row[0]
+        all_rpi[1]['date'] = row[2]
+        all_rpi[1]['log'] = row[3]
+        all_rpi[1]['filename'] = row[4]
     return str(all_rpi)
 
 ###############################################
