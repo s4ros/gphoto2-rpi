@@ -3,21 +3,35 @@
 
 <div id="index_page">
   <div id="lastlog_container">
-    <div id="status">
-      <span>Status:
-      </span>
-      <div id="status_"></div>
-    </div>
+    <h1><a href="https://github.com/s4ros/gphoto2-rpi">gphoto2-rpi</a></h1>
     <hr />
     <div id="header">
-      <span>Aktualny czas: </span>
+      <span>Aktualny czas: <div id="czas"></div></span>
       <br/>
       <span>Ostatnie  wpisów z aparatu</span>
     </div>
+{#
+  rpi['id']
+  rpi['rpi_id']
+  rpi['rpi_name']
+  rpi['date']
+  rpi['epoch']
+  rpi['log']
+  rpi['filename']
+#}
     <div id="lastlog">
       {% for rpi in all_rpi %}
-      {{ rpi }}<br/>
-      
+      <div class="rpi">
+
+        <div class="rpi-header">
+          <span class="rpi-header-id">{{ rpi.id}}</span> | <span class="rpi-header-rpi-name">{{ rpi.rpi_name }}</span>
+        </div>
+        <div class="rpi-filename">{{ rpi.filename }}</div>
+        <div class="rpi-date">Ostatnie zdjęcie: {{ rpi.date }}</div>
+        <div class="status_{{ rpi.status }}"></div>
+
+      </div>
+
     </br/>
       {% endfor %}
     </div>
@@ -28,6 +42,23 @@
 setTimeout(function(){
    window.location.reload(1);
 }, 60000);
+</script>
+
+<script>
+function daj_czas()
+{
+  var currentdate = new Date();
+  var datetime =
+  + currentdate.getFullYear() + "-"
+  + (currentdate.getMonth()+1)  + "-"
+  + currentdate.getDate() + " "
+                  + currentdate.getHours() + ":"
+                  + currentdate.getMinutes() + ":"
+                  + currentdate.getSeconds();
+  document.getElementById('czas').innerHTML = datetime;
+  setTimeout(daj_czas, 1000);
+}
+daj_czas();
 </script>
 
 {% endblock %}

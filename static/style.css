@@ -6,6 +6,9 @@ html, body {
   background-repeat: no-repeat;
   color: #c6c6c6;
 }
+#czas {
+  display: inline-block;
+}
 
 #index_page {
   top:0;
@@ -35,31 +38,40 @@ html, body {
   text-align: center;
 }
 
-#header > span {
+/*#header > span {
   width: 100%;
-}
+}*/
 
 #lastlog {
   margin-top: 10px;
-  display: flex;
-  justify-content: center;
+  /*display: flex;*/
+  position: relative;
 }
 
-#status {
-  display: flex;
-  width: 100%;
-  justify-content: center;
-  align-items: center;
+.rpi {
+  display: inline-block;
+  background-color: rgba(255, 255, 255, 0.2);
+  margin: 5px;
+  padding: 5px;
+  float: left;
 }
 
-#status > span {
-  font-size: 2em;
-  margin-right: 20px;
-  font-weight: bolder;
+.rpi .rpi-header {
+  display: block;
+}
+
+.rpi-header-id {
+  font-size: 1.7em;
   font-family: monospace;
 }
 
-#status_OK {
+.rpi-header-rpi-name {
+  font-size: 2em;
+  font-weight: bold;
+  font-family: monospace;
+}
+
+.status_OK {
     width: 150px;
     height: 150px;
     background-size: cover;
@@ -67,59 +79,10 @@ html, body {
     background-position-x: 0px;
 }
 
-#status_FAIL {
+.status_FAIL {
   width: 150px;
   height: 150px;
   background-size: cover;
   background-image: url(failok.png);
   background-position-x: 150px;
-}
-
-table {
-  border-spacing: 0px;
-  border-collapse: collapse;
-  background-color: rgba(0, 0, 0, 0.6);
-}
-
-table > tbody > tr {
-  text-align: left;
-}
-
-table > tbody > tr > th {
-  border-bottom: 1px dotted red;
-  border-top: 1px dotted red;
-  border-left: 1px solid #565656;
-  border-right: 1px solid #565656;
-}
-
-table > tbody > tr > td {
-  border-bottom: 1px solid #565656;
-  border-left: 1px solid #565656;
-  border-right: 1px solid #565656;
-  padding: 0 10px;
-}
-
-.td_id {
-  padding-left: 10px;
-  padding-right: 10px;
-  /*align-items: center;*/
-  /*justify-content: center;*/
-  text-align: center;
-}
-
-.td_log {
-  font-family: monospace;
-  padding: 3px 10px;
-}
-
-.td_date {
-  padding: 10px 5px;
-  font-weight: bold;
-  padding: 3px 10px;
-}
-
-.td_filename {
-  font-family: monospace;
-  font-weight: 200;
-  padding: 3px 10px;
 }

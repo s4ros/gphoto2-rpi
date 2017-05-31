@@ -11,6 +11,9 @@ import time
 from datetime import datetime
 from flask import Flask, redirect, url_for, request, render_template
 
+# TODO:
+# - create view for updating rpi name!
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -41,12 +44,22 @@ def multi_index():
     # fillup the all_rpi dictionaries for each RPI existing in db
     for i in range(len(all_rpi)):
         row = c.execute("SELECT * FROM gphoto2_rpi_monitor WHERE rpi_id = {} ORDER BY id DESC LIMIT 1".format(all_rpi[i]['rpi_id'])).fetchone()
-
         print(row)
         all_rpi[i]['id'] = row[0]
-        all_rpi[i]['date'] = row[2]
+        all_rpi[i]['date'] = datetime.fromtimestamp(float(row[2])).strftime('%Y-%m-%d %H:%M:%S')
+        all_rpi[i]['epoch'] = row[2]
         all_rpi[i]['log'] = row[3]
         all_rpi[i]['filename'] = row[4]
+        # counting the status
+        lastTime = int(row[2])
+        timeNow = time.time()
+        deltaTime = timeNow - lastTime
+        print("deltaTime = {}, timeNow = {}, lastTime = {}".format(deltaTime, timeNow, lastTime))
+        if deltaTime > FAILURE_TIME:
+            status="FAIL"
+        else:
+            status="OK"
+        all_rpi[i]['status'] = status
 
     print(all_rpi)
     return render_template('multi_index.html', all_rpi=all_rpi)
