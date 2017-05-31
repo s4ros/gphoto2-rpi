@@ -31,19 +31,25 @@ def multi_index():
     conn = sqlite3.connect(DBFILE)
     c = conn.cursor()
     all_rpi = []
+    # take all the rpi_ids from database
+    # and build all_rpi[] list
     for row in c.execute("SELECT id,value FROM gphoto2_rpi_ids"):
         new_entry = dict()
         new_entry['rpi_id'] = row[0]
         new_entry['rpi_name'] = row[1]
         all_rpi.append(new_entry)
-
+    # fillup the all_rpi dictionaries for each RPI existing in db
     for i in range(len(all_rpi)):
         row = c.execute("SELECT * FROM gphoto2_rpi_monitor WHERE rpi_id = {} ORDER BY id DESC LIMIT 1".format(all_rpi[i]['rpi_id'])).fetchone()
+
+        print(row)
         all_rpi[i]['id'] = row[0]
-        all_rpi[1]['date'] = row[2]
-        all_rpi[1]['log'] = row[3]
-        all_rpi[1]['filename'] = row[4]
-    return str(all_rpi)
+        all_rpi[i]['date'] = row[2]
+        all_rpi[i]['log'] = row[3]
+        all_rpi[i]['filename'] = row[4]
+
+    print(all_rpi)
+    return render_template('multi_index.html', all_rpi=all_rpi)
 
 ###############################################
 ## GET index (old)
