@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<div id="index_page">
+  <div id="lastlog_container">
+    <div id="status">
+      <span>Status:
+      </span>
+      <div id="status_"></div>
+    </div>
+    <hr />
+    <div id="header">
+      <span>Aktualny czas: </span>
+      <br/>
+      <span>Ostatnie  wpisów z aparatu</span>
+    </div>
+    <div id="lastlog">
+      {% for rpi in all_rpi %}
+      {{ rpi }}<br/>
+      
+    </br/>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<script>
+setTimeout(function(){
+   window.location.reload(1);
+}, 60000);
+</script>
+
+{% endblock %}
