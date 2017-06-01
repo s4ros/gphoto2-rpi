@@ -10,6 +10,23 @@ html, body {
   display: inline-block;
 }
 
+#gphoto2 {
+  color: #005911;
+  text-transform: uppercase;
+  text-decoration: none;
+  font-family: monospace;
+  font-size: 2em;
+}
+
+#github {
+  background-image: url(github.png);
+  /*background-color: rgba(255, 255  , 255, 0.1);*/
+  background-size: cover;
+  width:148px;
+  height: 55px;
+  display: inline-block;
+}
+
 #index_page {
   top:0;
   bottom: 0;
@@ -27,7 +44,7 @@ html, body {
   margin-bottom: 50px;
   position: relative;
   display: block;
-  width: 80%;
+  width: 60%;
   justify-content: center;
   text-align: center;
 }
@@ -53,7 +70,7 @@ html, body {
   float: left;
 }
 
-.rpi .rpi-header {
+.rpi > .rpi-header {
   display: block;
 }
 
@@ -100,4 +117,28 @@ html, body {
   background-size: cover;
   background-image: url(failok.png);
   background-position-x: 100px;
+}
+
+#footer-container {
+  display: block;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+#footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#footer-powered {
+
+}
+
+#footer-powered span {
+
+}
+
+#footer-powered > span.link a{
+  color: #008601;
 }

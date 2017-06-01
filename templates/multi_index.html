@@ -3,22 +3,12 @@
 
 <div id="index_page">
   <div id="lastlog_container">
-    <h1><a href="https://github.com/s4ros/gphoto2-rpi">gphoto2-rpi</a></h1>
-    <hr />
     <div id="header">
+    <a href="https://github.com/s4ros/gphoto2-rpi"><div id="github"></div></a><span id="gphoto2">gphoto2-rpi</span>
+    <hr />
       <span>Aktualny czas: <div id="czas"></div></span>
       <br/>
-      <span>Ostatnie  wpisów z aparatu</span>
     </div>
-{#
-  rpi['id']
-  rpi['rpi_id']
-  rpi['rpi_name']
-  rpi['date']
-  rpi['epoch']
-  rpi['log']
-  rpi['filename']
-#}
     <div id="lastlog">
       {% for rpi in all_rpi %}
       <div class="rpi">
@@ -59,4 +49,5 @@ function daj_czas()
 daj_czas();
 </script>
 
+{% include "footer.html" %}
 {% endblock %}
