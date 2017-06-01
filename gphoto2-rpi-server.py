@@ -11,9 +11,6 @@ import time
 from datetime import datetime
 from flask import Flask, redirect, url_for, request, render_template
 
-# TODO:
-# - create view for updating rpi name!
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -156,6 +153,28 @@ def insert():
         return response
     else:
         return "POST requests only"
+
+##############################################################################
+## chname - change RPI name
+@app.route('/chname', methods=['POST'])
+def chname():
+    status = "OK"
+    if request.method == 'POST':
+        data = request.get_json()
+        conn = sqlite3.connect(DBFILE)
+        c = conn.cursor()
+        rpi_id = data['id']
+        rpi_name = data['name']
+        try:
+            update_query = "UPDATE gphoto2_rpi_ids SET value = '{}' WHERE id = {}".format(rpi_name, rpi_id)
+            c.execute(update_query)
+            conn.commit()
+        except:
+            status = "FAIL"
+            conn.rollback()
+            pass
+        conn.close()
+        return status
 
 ##############################################################################
 ## main code
