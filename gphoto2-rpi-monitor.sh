@@ -6,7 +6,7 @@ SERVER=${1:-"rpi.s4ros.it"}
 
 LOGFILE=${2:-"/tmp/aparat.log"}
 
-/usr/bin/gphoto2 -L | tail -n 50> $LOGFILE
+/usr/bin/gphoto2 -L > $LOGFILE
 CONTENT=$(tail -n1 ${LOGFILE})
 FILENAME=$(echo $CONTENT | cut -d ' ' -f 2)
 DATE=$(stat -c "%Y" ${LOGFILE})
