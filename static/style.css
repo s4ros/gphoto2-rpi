@@ -27,7 +27,9 @@ html, body {
   margin-bottom: 50px;
   position: relative;
   display: block;
-  /*width: 75%;*/
+  width: 80%;
+  justify-content: center;
+  text-align: center;
 }
 
 #header {
@@ -38,19 +40,14 @@ html, body {
   text-align: center;
 }
 
-/*#header > span {
-  width: 100%;
-}*/
-
 #lastlog {
   margin-top: 10px;
-  /*display: flex;*/
   position: relative;
 }
 
 .rpi {
   display: inline-block;
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.1);
   margin: 5px;
   padding: 5px;
   float: left;
@@ -61,8 +58,9 @@ html, body {
 }
 
 .rpi-header-id {
-  font-size: 1.7em;
+  font-size: 1.0em;
   font-family: monospace;
+  vertical-align: top;
 }
 
 .rpi-header-rpi-name {
@@ -71,18 +69,35 @@ html, body {
   font-family: monospace;
 }
 
+.rpi-filename {
+  text-align: left;
+  font-family: monospace;
+}
+
+.rpi-date {
+  text-align: left;
+  font-family: sans-serif;
+  font-size: 0.7em;
+}
+
+.rpi-status {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .status_OK {
-    width: 150px;
-    height: 150px;
+    width: 100px;
+    height: 100px;
     background-size: cover;
     background-image: url(failok.png);
     background-position-x: 0px;
 }
 
 .status_FAIL {
-  width: 150px;
-  height: 150px;
+  width: 100px;
+  height: 100px;
   background-size: cover;
   background-image: url(failok.png);
-  background-position-x: 150px;
+  background-position-x: 100px;
 }

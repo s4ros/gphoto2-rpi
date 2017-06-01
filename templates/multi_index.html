@@ -22,26 +22,24 @@
     <div id="lastlog">
       {% for rpi in all_rpi %}
       <div class="rpi">
-
         <div class="rpi-header">
-          <span class="rpi-header-id">{{ rpi.id}}</span> | <span class="rpi-header-rpi-name">{{ rpi.rpi_name }}</span>
+          <span class="rpi-header-id">ID: {{ rpi.id}} |</span> <span class="rpi-header-rpi-name">Name: {{ rpi.rpi_name }}</span>
         </div>
         <div class="rpi-filename">{{ rpi.filename }}</div>
         <div class="rpi-date">Ostatnie zdjęcie: {{ rpi.date }}</div>
-        <div class="status_{{ rpi.status }}"></div>
-
+        <div class="rpi-status">
+          <div class="status_{{ rpi.status }}"></div>
+        </div>
       </div>
-
-    </br/>
       {% endfor %}
     </div>
   </div>
 </div>
 
 <script>
-setTimeout(function(){
-   window.location.reload(1);
-}, 60000);
+// setTimeout(function(){
+//    window.location.reload(1);
+// }, 60000);
 </script>
 
 <script>
