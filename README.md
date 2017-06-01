@@ -1,7 +1,7 @@
 # gphoto2-rpi
 ~~First of all, the project name has nothing to do with the **Nikon** itself ;) It was choosen only because I was working only with **Nikon** cameras when developing this silly project.~~
 
-Please, check the [Docker](#docker) part. Maybe you don't want to struggle with all of the manual installation :)
+Please, check the [Docker](#docker) part. Maybe you don't want to struggle with all of the manual installation :) At least on server side.
 
 Long story short:
 - raspberry pi was used to capture a photo on camera using `gphoto2`
@@ -15,7 +15,7 @@ The only and one requirement (at the moment at least) is the `flask` Python modu
 ## Setup
 The `gphoto2-rpi-monitor.sh` needs to be executed periodically on raspberry pi connected to the camera. It simply reads the output of `gphoto2` which is streamed from cron to `/tmp/aparat.log` file.
 
-To launch server you just simply executed
+To launch server you just simply execute
 ```sh
 python gphoto2-rpi-server.py
 ```
