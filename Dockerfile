@@ -10,8 +10,8 @@ VOLUME /rpi
 
 COPY static /static
 COPY templates /templates
-COPY nikon-rpi-server.py /nikon-rpi-server.py
+COPY gphoto2-rpi-server.py /gphoto2-rpi-server.py
 
 EXPOSE 56789
 
-CMD ["python","/nikon-rpi-server.py"]
+CMD ["python","/gphoto2-rpi-server.py"]
