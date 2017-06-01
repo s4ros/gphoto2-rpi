@@ -8,9 +8,9 @@
 
 function reset_nikon_container()
 {
-  docker stop nikon-rpi || docker kill nikon-rpi
-  docker rm nikon-rpi
-  docker run -d --name nikon-rpi -v /opt/home/s4ros/nikon-rpi:/rpi -v /etc/localtime:/etc/localtime:ro -p 56789:56789 s4ros/nikon-rpi
+  docker stop gphoto2-rpi || docker kill gphoto2-rpi
+  docker rm gphoto2-rpi
+  docker run -d --name gphoto2-rpi -v /opt/home/s4ros/gphoto2-rpi:/rpi -v /etc/localtime:/etc/localtime:ro -p 56789:56789 s4ros/gphoto2-rpi
 }
 
 if [[ "$1" == "restart" ]]; then

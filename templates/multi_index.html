@@ -1,0 +1,53 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<div id="index_page">
+  <div id="lastlog_container">
+    <div id="header">
+    <a href="https://github.com/s4ros/gphoto2-rpi"><div id="github"></div></a><span id="gphoto2">gphoto2-rpi</span>
+    <hr />
+      <span>Aktualny czas: <div id="czas"></div></span>
+      <br/>
+    </div>
+    <div id="lastlog">
+      {% for rpi in all_rpi %}
+      <div class="rpi">
+        <div class="rpi-header">
+          <span class="rpi-header-id">ID: {{ rpi.id}} |</span> <span class="rpi-header-rpi-name">Name: {{ rpi.rpi_name }}</span>
+        </div>
+        <div class="rpi-filename">{{ rpi.filename }}</div>
+        <div class="rpi-date">Ostatnie zdjęcie: {{ rpi.date }}</div>
+        <div class="rpi-status">
+          <div class="status_{{ rpi.status }}"></div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<script>
+// setTimeout(function(){
+//    window.location.reload(1);
+// }, 60000);
+</script>
+
+<script>
+function daj_czas()
+{
+  var currentdate = new Date();
+  var datetime =
+  + currentdate.getFullYear() + "-"
+  + (currentdate.getMonth()+1)  + "-"
+  + currentdate.getDate() + " "
+                  + currentdate.getHours() + ":"
+                  + currentdate.getMinutes() + ":"
+                  + currentdate.getSeconds();
+  document.getElementById('czas').innerHTML = datetime;
+  setTimeout(daj_czas, 1000);
+}
+daj_czas();
+</script>
+
+{% include "footer.html" %}
+{% endblock %}
