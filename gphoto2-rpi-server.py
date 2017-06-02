@@ -33,16 +33,19 @@ def multi_index():
     all_rpi = []
     # take all the rpi_ids from database
     # and build all_rpi[] list
-    for row in c.execute("SELECT id,value FROM gphoto2_rpi_ids"):
+    for row in c.execute("SELECT id,cpuid,name FROM gphoto2_rpi_ids"):
         new_entry = dict()
+        print(row)
+        print("-"*25)
         new_entry['rpi_id'] = row[0]
-        new_entry['rpi_name'] = row[1]
+        new_entry['cpuid'] = row[1]
+        new_entry['rpi_name'] = row[2]
         all_rpi.append(new_entry)
     # fillup the all_rpi dictionaries for each RPI existing in db
     for i in range(len(all_rpi)):
         row = c.execute("SELECT * FROM gphoto2_rpi_monitor WHERE rpi_id = {} ORDER BY id DESC LIMIT 1".format(all_rpi[i]['rpi_id'])).fetchone()
         print(row)
-        all_rpi[i]['id'] = row[0]
+        all_rpi[i]['id'] = row[1]
         all_rpi[i]['date'] = datetime.fromtimestamp(float(row[2])).strftime('%Y-%m-%d %H:%M:%S')
         all_rpi[i]['epoch'] = row[2]
         all_rpi[i]['log'] = row[3]
@@ -108,7 +111,7 @@ def dbinit():
         pass
     print("Database file is: {}".format(DBFILE))
     conn = sqlite3.connect(DBFILE)
-    conn.execute('CREATE TABLE gphoto2_rpi_ids (id INTEGER PRIMARY KEY, value TEXT UNIQUE)')
+    conn.execute('CREATE TABLE gphoto2_rpi_ids (id INTEGER PRIMARY KEY, cpuid TEXT UNIQUE, name TEXT NOT NULL DEFAULT "unnamed")')
     conn.execute('CREATE TABLE gphoto2_rpi_monitor (id INTEGER PRIMARY KEY, rpi_id INTEGER ,date INTEGER, log TEXT, filename TEXT, FOREIGN KEY(rpi_id) REFERENCES gphoto2_rpi_ids(id))')
     conn.close()
     return "dbinit"
@@ -122,7 +125,7 @@ def insert():
         log_date = data['date']
         log_content = data['content']
         log_filename = data['filename']
-        rpi_id = data['rpi_id']
+        rpi_cpuid = data['rpi_cpuid']
         rpi_found = False
         # sqlite insert
         try:
@@ -130,18 +133,18 @@ def insert():
             c = conn.cursor()
             # check if we the rpi_id doesn't exist in the db already
             for row in c.execute("SELECT * FROM gphoto2_rpi_ids"):
-                if rpi_id == row[1]:
+                if rpi_cpuid == row[1]:
                     rpi_found = True
                     rpi_found_id = row[0]
             if not rpi_found:
-                print "Didn't found {} in our database. Adding new one.".format(rpi_id)
-                insert_str = "INSERT INTO gphoto2_rpi_ids (value) VALUES('{}')".format(rpi_id)
+                print "Didn't found {} in our database. Adding new one.".format(rpi_cpuid)
+                insert_str = "INSERT INTO gphoto2_rpi_ids (cpuid) VALUES('{}')".format(rpi_cpuid)
                 c.execute(insert_str)
                 conn.commit()
-                rows = c.execute("SELECT id,value FROM gphoto2_rpi_ids WHERE value = '{}'".format(rpi_id))
-                print("new rpi data")
-                rpi_found_id = rows.fetchone()[0]
-                print(rpi_found_id)
+            rows = c.execute("SELECT * FROM gphoto2_rpi_ids WHERE cpuid = '{}'".format(rpi_cpuid))
+            rpi_found_id = rows.fetchone()[0]
+            print("new rpi data, cpuid: {}".format(rpi_found_id))
+
             insert_str = "INSERT INTO gphoto2_rpi_monitor (date, log, filename, rpi_id) VALUES({}, '{}', '{}', {})".format(log_date, log_content, log_filename, rpi_found_id)
             c.execute(insert_str)
             conn.commit()
@@ -166,7 +169,7 @@ def chname():
         rpi_id = data['id']
         rpi_name = data['name']
         try:
-            update_query = "UPDATE gphoto2_rpi_ids SET value = '{}' WHERE id = {}".format(rpi_name, rpi_id)
+            update_query = "UPDATE gphoto2_rpi_ids SET name = '{}' WHERE id = {}".format(rpi_name, rpi_id)
             c.execute(update_query)
             conn.commit()
         except:

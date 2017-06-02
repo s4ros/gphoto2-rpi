@@ -2,7 +2,7 @@
 
 set -x
 
-SERVER=${1:-"rpi.s4ros.it"}
+SERVER=${1:-"localhost:56789"}
 
 LOGFILE=${2:-"/tmp/aparat.log"}
 
@@ -15,5 +15,5 @@ RPI_ID=$(cat /proc/cpuinfo | grep Serial | cut -d ' ' -f 2)
 
 curl -H "Content-Type: application/json" \
   -X POST \
-  -d "{\"date\":${DATE},\"content\": \"${CONTENT}\",\"filename\":\"${FILENAME}\",\"rpi_id\":\"${RPI_ID:-0x0000}\"}" \
+  -d "{\"date\":${DATE},\"content\": \"${CONTENT}\",\"filename\":\"${FILENAME}\",\"rpi_cpuid\":\"${RPI_ID:-0x0000}\"}" \
   http://${SERVER}/insert

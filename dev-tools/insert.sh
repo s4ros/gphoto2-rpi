@@ -16,5 +16,5 @@ RPI_ID=${1-"1234"}
 
 curl -H "Content-Type: application/json" \
   -X POST \
-  -d "{\"date\":${DATE},\"content\": \"${CONTENT}\",\"filename\":\"${FILENAME}\",\"rpi_id\":\"${RPI_ID:-0x0000}\"}" \
+  -d "{\"date\":${DATE},\"content\": \"${CONTENT}\",\"filename\":\"${FILENAME}\",\"rpi_cpuid\":\"${RPI_ID:-0x0000}\"}" \
   http://${SERVER}/insert
