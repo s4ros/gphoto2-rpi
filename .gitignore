@@ -1,4 +1,5 @@
-
+setup-vars
+setup-rpi.sh
 bin_reverse.sh
 reverse
 aparat.log

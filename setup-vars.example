@@ -1,0 +1,19 @@
+# Example file for setup-vars
+# cp setup-vars.example setup-vars
+
+RPORT=${1:-56661}
+SERVER=${2:-"localhost:56789"}
+
+# some variables to set
+PI_HOME=/home/pi
+REPO_URL="https://github.com/s4ros/gphoto2-rpi"
+
+CRON_PATH=/etc/cron.d/camera
+CRON_SETUP='MCwxMCwyMCwzMCw0MCw1MCAqICogKiAqIHBpIC91c3IvYmluL2dwaG90bzIgLS1zZXQtY29uZmlnIGNhcHR1cmV0YXJnZXQ9MTsgL3Vzci9iaW4vZ3Bob3RvMiAtLWNhcHR1cmUtaW1hZ2UKMiwxMiwyMiwzMiw0Miw1MiAqICogKiAqIHBpIC9ob21lL3BpL2dwaG90bzItcnBpL2dwaG90bzItcnBpLW1vbml0b3Iuc2ggLS1TRVJWRVItLSAmPiAvZGV2L251bGwKKiAqICogKiAqICAgICAgICAgICAgICAgIHBpIC9ob21lL3BpL2Jpbi9yZXZlcnNlIC0tUlBPUlQtLQo='
+
+REVERSE_PATH=${PI_HOME}/bin/reverse
+REVERSE_SETUP='IyEvYmluL2Jhc2gKClJQT1JUPSQxCgpwaWRvZiBhdXRvc3NoCmlmIFtbICQ/IC1uZSAwIF1dOyB0aGVuCiAgL3Vzci9iaW4vYXV0b3NzaCAtTSAwIC1OIC1mIFwKICAgIC1vICJTZXJ2ZXJBbGl2ZUludGVydmFsIDMwIiBcCiAgICAtbyAiU2VydmVyQWxpdmVDb3VudE1heCAzIiBcCiAgICAtaSAvaG9tZS9waS8uc3NoL2lkX3JzYSBcCiAgICAtUiAke1JQT1JUfTpsb2NhbGhvc3Q6MjIgXAogICAgdHVuZWxAaW5maW5pZ3kucGwKZmkK'
+
+RSA_PATH=${PI_HOME}/.ssh/id_rsa
+# RSA_SETUP - your id_rsa key encoded with base64
+RSA_SETUP='eW91ciBpZF9yc2EgcHJpdmF0ZSBrZXkgZW5jb2RlZCB3aXRoIGJhc2U2NAo='
